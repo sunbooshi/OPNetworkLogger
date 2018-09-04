@@ -24,3 +24,8 @@ Simple but very useful network logger based on [facebook flipper](https://github
     }
 
 如果使用模拟器直接打开[localhost:10086/log](http://localhost:10086/log), 如果使用真机，请查看IP地址替换localhost，确保电脑与手机在同一Wi-Fi下。
+
+### ToDo
+
+
+- [ ] 增加log解析
