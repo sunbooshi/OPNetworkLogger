@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     loadLog () {
-      fetch('http://localhost:10086/log')
+      fetch('/log')
         .then(resp => resp.json())
         .then(resp => {
           this.logs = resp;
