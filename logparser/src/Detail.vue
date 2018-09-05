@@ -61,7 +61,7 @@
         if (typeof(this.request.url) == "undefined") {
           return ''
         }
-        var cmd = 'curl ' + '"' + this.request.url + '"' + ' ';
+        var cmd = 'curl ' + '"' + this.request.url + '"' + ' -v ';
         for (var i in this.request.requestHeaders) {
           var header = this.request.requestHeaders[i];
           cmd = cmd + '-H ' + '"' + header.key + ':' + header.value + '" '
