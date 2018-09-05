@@ -148,7 +148,24 @@
 }
 
 + (NSString *)index {
-    return @"<html> <header> <title>OPNetworkLogger</title> <style> .container { margin-left: auto; margin-right: auto; width: 560px; margin-top: 60px; padding: 20px; border:1px solid #eeeeee; border-radius: 6px; text-align: center; } h2 { color: #666666; } </style> <body> <div class=\"container\"> <h2>OPNetworkLogger</h2> <p>简单粗暴但却很有用的网络请求日志！</p> <a href=\"/log\">点击这里访问日志</a> <br/> <div style=\"margin-top:20px;\"> <a href=\"https://github.com/sunboshi/OPNetworkLogger\">GitHub</a> </div> </div> </body> </html>";
+    return @"<html> <header> <title>OPNetworkLogger</title> <style> .container { margin-left: auto; margin-right: auto; width: 560px; margin-top: 60px; padding: 20px; border:1px solid #eeeeee; border-radius: 6px; text-align: center; } h2 { color: #666666; } </style> <body> <div class=\"container\"> <h2>OPNetworkLogger</h2> <p>简单粗暴但却很有用的网络请求日志！</p> <a href=\"/logparser\">点击这里访问日志</a> <br/> <div style=\"margin-top:20px;\"> <a href=\"https://github.com/sunboshi/OPNetworkLogger\">GitHub</a> </div> </div> </body> </html>";
+}
+
++ (NSString *)logparser {
+    NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"logparser" ofType:@"html"];
+    NSString *jsPath = [[NSBundle mainBundle] pathForResource:@"logparser" ofType:@"js"];
+    NSError *error = nil;
+    NSString *html = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:&error];
+    if (error) {
+        return @"load html error!";
+    }
+    
+    NSString *js = [NSString stringWithContentsOfFile:jsPath encoding:NSUTF8StringEncoding error:&error];
+    if (error) {
+        return @"load js error!";
+    }
+    
+    return [NSString stringWithFormat:html, js];
 }
 
 - (void)startWebServer {
@@ -162,7 +179,14 @@
                               }];
     
     [self.webServer addHandlerForMethod:@"GET" path:@"/log" requestClass:[GCDWebServerRequest class] processBlock:^GCDWebServerResponse * _Nullable(__kindof GCDWebServerRequest * _Nonnull request) {
-        return [GCDWebServerDataResponse responseWithJSONObject:[[OPNetworkLogger defaultLogger] allRequests]];
+        GCDWebServerDataResponse *response = [GCDWebServerDataResponse responseWithJSONObject:[[OPNetworkLogger defaultLogger] allRequests]];
+        [response setValue:@"*" forAdditionalHeader:@"Access-Control-Allow-Origin"];
+        return response;
+    }];
+    
+    [self.webServer addHandlerForMethod:@"GET" path:@"/logparser" requestClass:[GCDWebServerRequest class] processBlock:^GCDWebServerResponse * _Nullable(__kindof GCDWebServerRequest * _Nonnull request) {
+        GCDWebServerDataResponse *response = [GCDWebServerDataResponse responseWithHTML:[OPNetworkLogger logparser]];
+        return response;
     }];
     
     // Start server on port 10086
