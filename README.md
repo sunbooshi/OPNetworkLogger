@@ -29,13 +29,27 @@ OPNetworkLogger使用了[flipper](https://github.com/facebook/flipper)的网络�
         ...
     }
 
-如果使用模拟器直接打开[localhost:10086/log](http://localhost:10086/log), 如果使用真机，请查看IP地址替换localhost，确保电脑与手机在同一Wi-Fi下。
+如果使用模拟器直接打开[localhost:10086/logparser](http://localhost:10086/logparser), 如果使用真机，请查看IP地址替换localhost，确保电脑与手机在同一Wi-Fi下。如下图所示：
+
+![](./logparser.png)
+
+logparser是用Vue.js编写的，仿照了flipper的样式，因为不熟前端，所以UI做的比较简陋，但是够用了。
+
+其中的cURL比较好用，可以直接复制到终端，使用cURL模拟请求。
+
+logparser目录是logparser的源码，可以调整样式。
+要想编译，首先需要安装npm，然后使用如下命令编译：
+
+    npm install
+    npm run build
+
+将**logparser/dist**目录下的**logparser.js**覆盖**OPNetworkLogger/resourse/logparser.js**
 
 ### ToDo
 
 
-- [ ] 增加log解析
-- [ ] 增加将请求转为curl命令的功能
+- [x] 增加log解析
+- [x] 增加将请求转为curl命令的功能
 
 
 ### 吐槽
