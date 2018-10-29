@@ -46,7 +46,7 @@
           return '';
         }
         else {
-          return window.atob(this.request.requestData);
+          return decodeURIComponent(escape(window.atob(this.request.requestData)));
         }
       },
       responseData: function () {
@@ -54,7 +54,7 @@
           return '';
         }
         else {
-          return window.atob(this.request.responseData);
+          return decodeURIComponent(escape(window.atob(this.request.responseData)));
         }
       },
       curlCommand: function () {
